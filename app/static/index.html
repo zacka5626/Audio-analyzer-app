@@ -12,15 +12,33 @@
 
     <div class="container">
 
-        <h1>🎤 Audio to Text</h1>
+        <h1>🎤 Audio Analyzer</h1>
+
+        <hr>
+
+        <h2>Upload Audio</h2>
 
         <input type="file" id="audioFile" accept="audio/*">
 
         <button onclick="uploadAudio()">
-            Transcribe Audio
+            Upload & Transcribe
         </button>
 
-        <h3>Result:</h3>
+        <hr>
+
+        <h2>Live Microphone</h2>
+
+        <button id="startBtn">
+            Start Recording
+        </button>
+
+        <button id="stopBtn" disabled>
+            Stop Recording
+        </button>
+
+        <hr>
+
+        <h3>Transcription Result</h3>
 
         <div id="result"></div>
 
