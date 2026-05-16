@@ -1,6 +1,7 @@
 from faster_whisper import WhisperModel
 
-# Load model once
+
+# Load model once during startup
 model = WhisperModel(
     "base",
     device="cpu",
@@ -10,11 +11,40 @@ model = WhisperModel(
 
 def transcribe_audio(audio_path: str):
 
-    segments, info = model.transcribe(audio_path)
+    try:
 
-    full_text = ""
+        segments, info = model.transcribe(
+            audio_path,
 
-    for segment in segments:
-        full_text += segment.text + " "
+            # Faster streaming response
+            beam_size=1,
 
-    return full_text.strip()
+            # Better real-time behavior
+            vad_filter=True,
+
+            # Lower latency
+            condition_on_previous_text=False,
+
+            # Language detection
+            language="en"
+        )
+
+        text = ""
+
+        for segment in segments:
+
+            print(
+                f"[{segment.start:.2f}s -> "
+                f"{segment.end:.2f}s] "
+                f"{segment.text}"
+            )
+
+            text += segment.text + " "
+
+        return text.strip()
+
+    except Exception as e:
+
+        print("Transcription Error:", e)
+
+        return ""
