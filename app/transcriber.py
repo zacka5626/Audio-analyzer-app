@@ -1,32 +1,44 @@
 from faster_whisper import WhisperModel
 
+model = None
 
-# Load model once during startup
-model = WhisperModel(
-    "base",
-    device="cpu",
-    compute_type="int8"
-)
+
+def get_model():
+
+    global model
+
+    if model is None:
+
+        print("Loading Whisper model...")
+
+        model = WhisperModel(
+            "small",
+            device="cpu",
+            compute_type="int8"
+        )
+
+        print("Whisper model loaded.")
+
+    return model
 
 
 def transcribe_audio(audio_path: str):
 
     try:
 
+        model = get_model()
+
         segments, info = model.transcribe(
+
             audio_path,
 
-            # Faster streaming response
             beam_size=1,
 
-            # Better real-time behavior
             vad_filter=True,
 
-            # Lower latency
             condition_on_previous_text=False,
 
-            # Language detection
-            language="en"
+            temperature=0.0
         )
 
         text = ""

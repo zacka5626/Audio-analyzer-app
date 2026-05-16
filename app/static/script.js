@@ -196,7 +196,7 @@ function startChunkRecording() {
             mediaRecorder.stop();
         }
 
-    }, 3000);
+    }, 5000);
 }
 
 
